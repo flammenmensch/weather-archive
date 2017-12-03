@@ -13,6 +13,7 @@ const open = () =>
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
+      const transaction = event.target.transaction;
 
       [ 'temperature', 'precipitation' ]
         .filter((name) => !hasStore(db, name))
@@ -22,7 +23,7 @@ const open = () =>
           ]);
         });
 
-      resolve(db);
+      transaction.oncomplete = () => resolve(db);
     };
   });
 
@@ -82,18 +83,20 @@ const loadFromDb = (name) =>
     .then(queryStore);
 
 const loadFromServer = (name) =>
-  fetch(`./data/${type}.json`)
+  fetch(`./data/${name}.json`)
     .then((response) => response.json());
 
 export const load = (name) =>
   exists(name)
     .then((result) => {
       if (result) {
+        console.log('Load from IndexedDB');
         return loadFromDb(name);
       }
+      console.log('Load from Server');
       return loadFromServer(name)
-        .then((json) =>
-          save(name, json)
-            .then(() => json)
-        );
+        .then((json) => {
+          save(name, json);
+          return json;
+        });
     });
