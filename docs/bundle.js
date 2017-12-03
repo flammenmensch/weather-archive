@@ -3774,6 +3774,7 @@ var open = function open() {
 
     request.onupgradeneeded = function (event) {
       var db = event.target.result;
+      var transaction = event.target.transaction;
 
       ['temperature', 'precipitation'].filter(function (name) {
         return !hasStore(db, name);
@@ -3781,7 +3782,9 @@ var open = function open() {
         createStore(db, name, { keyPath: 't' }, [{ name: 'date', key: 't', options: { unique: true } }]);
       });
 
-      resolve(db);
+      transaction.oncomplete = function () {
+        return resolve(db);
+      };
     };
   });
 };
@@ -3855,7 +3858,7 @@ var loadFromDb = function loadFromDb(name) {
 };
 
 var loadFromServer = function loadFromServer(name) {
-  return fetch('./data/' + type + '.json').then(function (response) {
+  return fetch('./data/' + name + '.json').then(function (response) {
     return response.json();
   });
 };
@@ -3863,12 +3866,13 @@ var loadFromServer = function loadFromServer(name) {
 var load = exports.load = function load(name) {
   return exists(name).then(function (result) {
     if (result) {
+      console.log('Load from IndexedDB');
       return loadFromDb(name);
     }
+    console.log('Load from Server');
     return loadFromServer(name).then(function (json) {
-      return save(name, json).then(function () {
-        return json;
-      });
+      save(name, json);
+      return json;
     });
   });
 };
