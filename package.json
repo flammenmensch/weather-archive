@@ -1,0 +1,26 @@
+{
+  "name": "weather-task",
+  "version": "1.0.0",
+  "description": "Test task",
+  "main": "src/index.js",
+  "author": "Flammenmensch <maleventum@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "copy-webpack-plugin": "^4.2.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.5"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --content-base build/ --progress --colors --watch",
+    "publish": "webpack --output-path ./docs"
+  },
+  "repository": {
+    "git": "https://github.com/flammenmensch/weather-archive.git"
+  }
+}

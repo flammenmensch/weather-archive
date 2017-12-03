@@ -1,0 +1,43 @@
+:root {
+  --gridSize: 8px;
+  --borderRadius: 2px;
+  --borderColor: #e6e6e6;
+}
+
+body {
+  margin: var(--gridSize);
+  font-family: Roboto, sans-serif;
+}
+
+#app {
+  display: flex;
+}
+
+.header {
+  margin: calc(var(--gridSize) * 2) 0;
+  font-weight: 400;
+}
+
+.chart-container {
+  border-radius: var(--borderRadius);
+  border: 1px solid var(--borderColor);
+}
+
+.date-container {
+  margin-bottom: var(--gridSize);
+}
+
+.button-container {
+  margin-right: var(--gridSize);
+  display: flex;
+  flex-direction: column;
+}
+
+.date-picker {
+  outline: none;
+  font-size: 1em;
+  font-family: "Roboto Mono", monospace;
+  border: 1px solid var(--borderColor);
+  padding: var(--gridSize);
+  border-radius: var(--borderRadius);
+}
